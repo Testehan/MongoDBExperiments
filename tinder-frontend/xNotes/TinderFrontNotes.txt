@@ -1,0 +1,6 @@
+1. In order to run the app make sure that you eithr run using the runner "RunTinderDev", or you
+can navigate to the tinder-frontend folder and run from command line "npm run dev".
+
+
+
+TODO Continue from video 3:17:17
