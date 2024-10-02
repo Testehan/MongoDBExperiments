@@ -33,7 +33,7 @@ const ProfileSelector = () => (
   </div>
 );
 
-const MatchesList = () => (
+const MatchesList = ({ onSelectMatch }) => (
     <div className="rounded-lg shadow-lg p-4">
       <h2 className="text-2xl font-bold mb-4">Your Matches:</h2>
       <ul>
@@ -44,7 +44,7 @@ const MatchesList = () => (
             <li key={match.id} className="mb-2">
               <button
                   className="w-full hover:bg-gray-100 rounded flex item-center"
-                  onClick={() => console.log("Starting  a chat with " )}
+                  onClick={onSelectMatch}   // this will execute this function recieved as parameter
               >
                 <img src={match.imageUrl} className="w-16 h-16 rounded-full mr-3 object-cover" />
                 <span>
@@ -124,8 +124,8 @@ function App() {
         switch (currentScreen) {
             case 'profile':
                 return <ProfileSelector/>;
-            case 'matches':
-                return <MatchesList/>;
+            case 'matches':                 // here we are passing the setCurrentScreen function with "chat" argument to the MatchesList
+                return <MatchesList onSelectMatch={()=>setCurrentScreen('chat')}/>;
             case 'chat':
                 return <ChatScreen/>;
         }
