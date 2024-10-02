@@ -12,6 +12,20 @@ const fetchRandomProfile = async () => {
     return response.json();
 }
 
+const saveSwipe = async (profileId) => {
+    const response = await fetch('http://localhost:8080/matches', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ profileId })
+    });
+    if (!response.ok) {
+        throw new Error('Failed to save swipe');
+    }
+}
+
+
 const ProfileSelector = ( {profile, onSwipe} ) => (
   profile ? (       // if profile exists display it
   <div className="rounded-lg overflow-hidden bg-white shadow-lg">
@@ -148,9 +162,9 @@ function App() {
         }
     }
 
-    const onSwipe = (swipeDirection) => {
+    const onSwipe = (profileId, swipeDirection) => {
         if (swipeDirection === 'right'){
-
+            saveSwipe(profileId);
         }
 
         loadRandomProfile();        // no matter what type the swipe is, we need to load a new profile
