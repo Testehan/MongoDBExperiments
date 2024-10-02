@@ -1,21 +1,30 @@
 import './App.css'
 import {User, MessageCircle, X, Heart} from "lucide-react"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const ProfileSelector = () => (
+const fetchRandomProfile = async () => {
+    console.log("fetching a random profile");
+    const response = await fetch('http://localhost:8080/profiles/random');
+    if (!response.ok) {
+        throw new Error('Failed to fetch profile');
+    }
+    return response.json();
+}
 
+const ProfileSelector = ( {profile} ) => (
+  profile ? (       // if profile exists display it
   <div className="rounded-lg overflow-hidden bg-white shadow-lg">
     <div className="relative">
-      <img src="https://models.bestmodelsagency.com/recursos/clientes/F31110A5-6133-4F2E-96A8-927FA9485371/list.jpg?v1589811317?202203111855" />
+      <img src={profile.imageUrl} />
       <div className="absolute bottom-0 left-0 right-0 text-white p-4 bg-gradient-to-t from-black" >
-        <h2 className='text-3xl font-bold'>Laura, 23</h2>
+        <h2 className='text-3xl font-bold'>{profile.firstName}, {profile.age}</h2>
       </div>
     </div>
 
     <div className="p-4">
       <p className="text-gray-600 mb-4">
-        Always up for trying new things. Love to travel, explore, and discover new places. Let's see where life takes us!
+          {profile.bio}
       </p>
     </div>
 
@@ -31,6 +40,7 @@ const ProfileSelector = () => (
     </div>
 
   </div>
+  ) : (<div>Loading...</div>)   // if profile does not exist display this div
 );
 
 const MatchesList = ({ onSelectMatch }) => (
@@ -117,13 +127,31 @@ return (
 function App() {
 
     // when defining state, we also need to define the method that sets that state, in this case setCurrentScreen;
-    // Default state is profile
+    // Default state is 'profile'
     const [currentScreen, setCurrentScreen] = useState('profile');
+    // a state for the current profile being shown in the UI
+    const [currentProfile, setCurrentProfile] = useState(null);
+
+    useEffect(() => {
+        console.log("loading a random profile");
+        loadRandomProfile();
+        // loadMatches();
+    }, {});
+
+    const loadRandomProfile = async () => {
+        try {
+            const profile = await fetchRandomProfile();
+            console.log("setting a random profile");
+            setCurrentProfile(profile);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const renderScreen = () => {
         switch (currentScreen) {
             case 'profile':
-                return <ProfileSelector/>;
+                return <ProfileSelector profile={currentProfile} />;
             case 'matches':                 // here we are passing the setCurrentScreen function with "chat" argument to the MatchesList
                 return <MatchesList onSelectMatch={()=>setCurrentScreen('chat')}/>;
             case 'chat':
