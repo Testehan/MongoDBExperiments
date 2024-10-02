@@ -58,6 +58,60 @@ const MatchesList = () => (
     </div>
 );
 
+const ChatScreen = () => {
+    // this state holds the message that the user types in the input field
+    const [input, setInput] = useState('');
+
+    const handleSend = async (input) => {
+        if (input.trim()) {
+            // await sendMessage(conversation.id, input);
+            console.log(input);
+            setInput('');
+        }
+        // refreshState();
+    }
+
+return (
+    <div className='rounded-lg shadow-lg p-4'>
+        <h2 className="text-2xl font-bold mb-4">Chat with Foo Bar </h2>
+        <div className="h-[50vh] border rounded-lg overflow-y-auto mb-6 p-4 bg-gray-50">
+        {
+            [
+                "Hi",
+                "How are you ?",
+                "How are you ?",
+                "How are you ?",
+                "How are you ?",
+                "How are you ?",
+                "How are you ?",
+                "How are you ?"
+            ].map((message, index) => (
+                <div key={index}>
+                    <div className='mb-4 p-2 rounded bg-gray-100'>{message}</div>
+                </div>
+            ))
+        }
+        </div>
+
+        <div className="flex items-center">
+            <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                className="flex-1 border-2 border-gray-300 rounded-full py-2 px-4 mr-2 focus:outline-none focus:border-blue-500"
+                placeholder="Type a message..."
+            />
+            <button
+                className="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600 transition-colors duration-200"
+                onClick={()=> handleSend(input)}
+            >
+                {/*<Send size={24} />*/}
+            </button>
+        </div>
+
+    </div>
+)};
+
 
 
 function App() {
@@ -69,9 +123,11 @@ function App() {
     const renderScreen = () => {
         switch (currentScreen) {
             case 'profile':
-                return <ProfileSelector></ProfileSelector>;
+                return <ProfileSelector/>;
             case 'matches':
-                return <MatchesList></MatchesList>;
+                return <MatchesList/>;
+            case 'chat':
+                return <ChatScreen/>;
         }
     }
 
