@@ -12,7 +12,7 @@ const fetchRandomProfile = async () => {
     return response.json();
 }
 
-const ProfileSelector = ( {profile} ) => (
+const ProfileSelector = ( {profile, onSwipe} ) => (
   profile ? (       // if profile exists display it
   <div className="rounded-lg overflow-hidden bg-white shadow-lg">
     <div className="relative">
@@ -148,10 +148,18 @@ function App() {
         }
     }
 
+    const onSwipe = (swipeDirection) => {
+        if (swipeDirection === 'right'){
+
+        }
+
+        loadRandomProfile();        // no matter what type the swipe is, we need to load a new profile
+    }
+
     const renderScreen = () => {
         switch (currentScreen) {
             case 'profile':
-                return <ProfileSelector profile={currentProfile} />;
+                return <ProfileSelector profile={currentProfile} onSwipe={onSwipe} />;
             case 'matches':                 // here we are passing the setCurrentScreen function with "chat" argument to the MatchesList
                 return <MatchesList onSelectMatch={()=>setCurrentScreen('chat')}/>;
             case 'chat':
