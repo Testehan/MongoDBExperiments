@@ -1,6 +1,9 @@
-1. In order to run the app make sure that you eithr run using the runner "RunTinderDev", or you
+1. In order to run the app make sure that you either run using the runner "RunTinderDev", or you
 can navigate to the tinder-frontend folder and run from command line "npm run dev".
+You also need to run the tinder-ai-backup java project.
 
+2. In order to create a new react project go inside a folder and run "npm create vite" and follow the steps.
+npm (Node Package Manager) is a package manager for the JavaScript programming language. It is used to manage
+dependencies in Node.js projects, allowing you to easily install, update, and remove packages from your projects.
+(so..maven but for js)
 
-
-TODO Continue from video 3:17:17
