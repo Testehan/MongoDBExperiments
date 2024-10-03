@@ -1,5 +1,5 @@
 import './App.css'
-import {User, MessageCircle, X, Heart} from "lucide-react"
+import {User, MessageCircle, X, Heart, Send} from "lucide-react"
 
 import React, { useState, useEffect } from 'react';
 
@@ -32,6 +32,17 @@ const fetchMatches = async () => {
     }
     return response.json();
 }
+
+const fetchConversation = async (conversationId) => {
+    console.log("fetching conversation: " + conversationId);
+    const response = await fetch(`http://localhost:8080/conversations/${conversationId}`);
+    if (!response.ok) {
+        throw new Error('Failed to fetch conversation');
+    }
+    return response.json();
+}
+
+
 
 
 const ProfileSelector = ( {profile, onSwipe} ) => (
@@ -69,11 +80,11 @@ const MatchesList = ({ matches, onSelectMatch }) => (
     <div className="rounded-lg shadow-lg p-4">
       <h2 className="text-2xl font-bold mb-4">Your Matches:</h2>
       <ul>
-        {matches.map(match => (
-            <li key={match.profile.id} className="mb-2">
+        {matches.map((match, index) => (
+            <li key={index} className="mb-2">
               <button
                   className="w-full hover:bg-gray-100 rounded flex item-center"
-                  onClick={onSelectMatch}   // this will execute this function recieved as parameter
+                  onClick={() => {console.log(match.profile);console.log(match.conversationId);onSelectMatch(match.profile,match.conversationId)}}   // this will execute this function recieved as parameter
               >
                   <img src={match.profile.imageUrl} className="w-16 h-16 rounded-full mr-3 object-cover" />
                   <span>
@@ -87,7 +98,7 @@ const MatchesList = ({ matches, onSelectMatch }) => (
     </div>
 );
 
-const ChatScreen = () => {
+const ChatScreen = ({currentMatch, conversationMessages}) => {
     // this state holds the message that the user types in the input field
     const [input, setInput] = useState('');
 
@@ -100,23 +111,14 @@ const ChatScreen = () => {
         // refreshState();
     }
 
-return (
+return currentMatch ? (
     <div className='rounded-lg shadow-lg p-4'>
-        <h2 className="text-2xl font-bold mb-4">Chat with Foo Bar </h2>
+        <h2 className="text-2xl font-bold mb-4">Chat with {currentMatch.firstName} </h2>
         <div className="h-[50vh] border rounded-lg overflow-y-auto mb-6 p-4 bg-gray-50">
         {
-            [
-                "Hi",
-                "How are you ?",
-                "How are you ?",
-                "How are you ?",
-                "How are you ?",
-                "How are you ?",
-                "How are you ?",
-                "How are you ?"
-            ].map((message, index) => (
+            conversationMessages.map((message, index) => (
                 <div key={index}>
-                    <div className='mb-4 p-2 rounded bg-gray-100'>{message}</div>
+                    <div className='mb-4 p-2 rounded bg-gray-100'>{message.messageText}</div>
                 </div>
             ))
         }
@@ -134,12 +136,12 @@ return (
                 className="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600 transition-colors duration-200"
                 onClick={()=> handleSend(input)}
             >
-                {/*<Send size={24} />*/}
+                <Send size={24} />
             </button>
         </div>
 
     </div>
-)};
+) : (<div>Loading...</div>) };
 
 
 
@@ -151,6 +153,7 @@ function App() {
     // a state for the current profile being shown in the UI
     const [currentProfile, setCurrentProfile] = useState(null);
     const [matches, setMatches] = useState([]);     // initially this is an empty array
+    const [currentMatchAndConversation, setCurrentMatchAndConversation] = useState({ match: {}, conversationMessages: []});
 
     useEffect(() => {
         loadRandomProfile();
@@ -184,14 +187,22 @@ function App() {
         loadRandomProfile();        // no matter what type the swipe is, we need to load a new profile
     }
 
+    const onSelectMatch = async (profile, conversationId) => {
+        const conversation = await fetchConversation(conversationId);
+        console.log(" conversation.messages " + conversation.messages);
+        setCurrentMatchAndConversation({match: profile, conversationMessages: conversation.messages});
+        setCurrentScreen('chat');
+    }
+
     const renderScreen = () => {
         switch (currentScreen) {
             case 'profile':
                 return <ProfileSelector profile={currentProfile} onSwipe={onSwipe} />;
             case 'matches':                 // here we are passing the setCurrentScreen function with "chat" argument to the MatchesList
-                return <MatchesList matches={matches} onSelectMatch={()=>setCurrentScreen('chat')}/>;
+                return <MatchesList matches={matches} onSelectMatch={onSelectMatch}/>;
             case 'chat':
-                return <ChatScreen/>;
+                console.log(currentMatchAndConversation);
+                return <ChatScreen currentMatch={currentMatchAndConversation.match} conversationMessages={currentMatchAndConversation.conversationMessages}/>;
         }
     }
 
