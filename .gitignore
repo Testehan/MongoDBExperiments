@@ -7,6 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+chpt01-learning/node_modules
 tinder-frontend/node_modules
 dist
 dist-ssr
