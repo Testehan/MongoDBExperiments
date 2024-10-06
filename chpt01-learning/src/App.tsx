@@ -2,6 +2,7 @@ import './Message.tsx'
 import Message from "./Message.tsx";
 import ListGroup from "./components/ListGroup.tsx";
 import Alert from "./components/Alert.tsx";
+import Button from "./components/Button.tsx";
 
 // TODO continue form hour 1:00:00
 
@@ -16,6 +17,8 @@ function App() {
         <Alert>
             Hello <b>bish</b>
         </Alert>
+        <br />
+        <Button text={'Click me'} onClick={() => console.log("A button was clicked")} />
     </div>
 }
 
