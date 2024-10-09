@@ -1,3 +1,10 @@
+// the imports do not work because of this project setup, where the js libraries are obtained from a CDN.. however
+// if using vite, things would be simpler
+// import React from "react"
+// import ReactDom from "react-dom"
+// import Header from './Header.js'
+
+
 function MyOwnComponent(){
     return <h1>I am learning react!</h1>
 }
