@@ -10,7 +10,8 @@ import {nanoid} from "nanoid"
 function App() {
   // const [notes, setNotes] = useState(JSON.parse(localStorage.getItem("myNotes") ) || [] )
   const [notes, setNotes] = useState(
-      JSON.parse(localStorage.getItem("myNotes")) || []
+      () => JSON.parse(localStorage.getItem("myNotes")) || []
+
   )
   const [currentNoteId, setCurrentNoteId] = useState((notes[0] && notes[0].id) || "")
 
@@ -35,6 +36,12 @@ function App() {
     }))
   }
 
+  function deleteNote(event, noteId) {
+    event.stopPropagation()
+    // we are settings the notes state, to the notes array that does not contain the note with id that we want to delete
+    setNotes(oldNotes => oldNotes.filter(note => note.id != noteId));
+  }
+
   function findCurrentNote() {
     return notes.find(note => {
       return note.id === currentNoteId
@@ -56,6 +63,7 @@ function App() {
                     currentNote={findCurrentNote()}
                     setCurrentNoteId={setCurrentNoteId}
                     newNote={createNewNote}
+                    deleteNote={deleteNote}
                 />
                 {
                     currentNoteId &&
