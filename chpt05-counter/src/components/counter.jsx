@@ -15,8 +15,10 @@ class Counter extends Component{
         </ul>;
     }
 
-    handleIncrement = () =>{
+    handleIncrement = (product) =>{
+        console.log(product)
         console.log("Increment clicked ", this);
+        this.setState({count: this.state.count + 1})        // using this setState method, react is aware of the state changes and can update the UI accordingly
     }
 
     render(){
@@ -26,7 +28,7 @@ class Counter extends Component{
 
                 <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
 
-                <button onClick={this.handleIncrement} className="btn btn-secondary btn-sm">Increment</button>
+                <button onClick={()=>this.handleIncrement({id:1})} className="btn btn-secondary btn-sm">Increment</button>
 
                 {this.renderTags()}
             </>
