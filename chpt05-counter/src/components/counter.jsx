@@ -15,6 +15,14 @@ class Counter extends Component{
     //     </ul>;
     // }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("Counter componentDidUpdate")
+    }
+
+    componentWillUnmount() {
+        console.log("Counter componentWillUnmount")
+    }
+
     handleIncrement = (product) =>{
         console.log(product)
         console.log("Increment clicked ", this);
@@ -25,17 +33,23 @@ class Counter extends Component{
         console.log(this.props)
 
         return (
-            <>
+            <div className="row">
                 {/*{this.props.children}*/}
                 {/*<img src={this.state.imageUrl}  alt="no picture found :(" />*/}
 
-                <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
+                <div className="col-1">
+                    <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
+                </div>
 
-                <button onClick={()=>this.props.onIncrement(this.props.counter)} className="btn btn-secondary btn-sm">Increment</button>
-                <button onClick={()=>this.props.onDelete(this.props.counter.id)}  className="btn btn-danger btn-sm m-2">Delete</button>
-                <br />
+                <div className="col">
+                    <button onClick={()=>this.props.onIncrement(this.props.counter)} className="btn btn-secondary btn-sm">+</button>
+                    <button onClick={()=>this.props.onDecrement(this.props.counter)} className="btn btn-secondary btn-sm m-2"
+                        disabled={this.props.counter.value === 0 ? 'disabled' : ''}>-</button>
+                    <button onClick={()=>this.props.onDelete(this.props.counter.id)}  className="btn btn-danger btn-sm m-2">Delete</button>
+                    <br />
+                </div>
                 {/*{this.renderTags()}*/}
-            </>
+            </div>
         );
     }
 
