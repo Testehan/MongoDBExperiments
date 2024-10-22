@@ -4,10 +4,10 @@ import App from './App.jsx'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import './components/counter'
-import Counter from "./components/counter.jsx";
+import Counters from "./components/counters.jsx";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Counter />
+    <Counters />
   </StrictMode>,
 )
