@@ -1,9 +1,12 @@
 import React, {Component} from "react";
 import {getMovies, deleteMovie} from "../services/fakeMovieService.js";
+import Pagination from "./pagination.jsx"
 
 class Movies extends Component{
     state = {
-        movies: getMovies()
+        movies: getMovies(),
+        currentPage : 1,
+        pageSize: 4
     }
 
     handleDelete = movie => {
@@ -11,6 +14,11 @@ class Movies extends Component{
         deleteMovie(movie);
         this.setState({movies: getMovies()})
 
+    }
+
+    handlePageChange = page => {
+        console.log("Page change clicked " + page);
+        this.setState({currentPage:page})
     }
 
     render (){
@@ -48,6 +56,11 @@ class Movies extends Component{
                         )}
                         </tbody>
                     </table>
+
+                    <Pagination itemsCount={this.state.movies.length}
+                                pageSize={this.state.pageSize}
+                                onPageChange={this.handlePageChange}
+                                currentPage={this.state.currentPage}/>
                 </>
             )
         } else {
