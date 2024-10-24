@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {getMovies, deleteMovie} from "../services/fakeMovieService.js";
-import Pagination from "./pagination.jsx"
+import Pagination from "./pagination.jsx";
+import {paginate} from "../utils/pagination.js";
 
 class Movies extends Component{
     state = {
@@ -25,9 +26,14 @@ class Movies extends Component{
         const dbContainsMovies = this.state.movies.length>0;
 
         if (dbContainsMovies) {
+            const paginatedMovies = paginate(this.state.movies, this.state.currentPage, this.state.pageSize);
+
             return (
                 <>
                     <h1>Showing {this.state.movies.length} movies in the database.</h1>
+
+
+
                     <table className="table table-striped">
                         <thead>
                         <tr>
@@ -40,7 +46,7 @@ class Movies extends Component{
                         </tr>
                         </thead>
                         <tbody>
-                        {this.state.movies.map((movie, index) =>
+                        {paginatedMovies.map((movie, index) =>
                             <tr key={index + 1}>
                                 <th scope="row">{index + 1}</th>
                                 <td>{movie.title}</td>
@@ -57,7 +63,7 @@ class Movies extends Component{
                         </tbody>
                     </table>
 
-                    <Pagination itemsCount={this.state.movies.length}
+                    <Pagination itemsCount= {this.state.movies.length}
                                 pageSize={this.state.pageSize}
                                 onPageChange={this.handlePageChange}
                                 currentPage={this.state.currentPage}/>
