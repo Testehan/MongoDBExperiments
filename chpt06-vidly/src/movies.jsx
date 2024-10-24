@@ -1,9 +1,11 @@
 import React, {Component} from "react";
-import {getMovies, deleteMovie} from "../services/fakeMovieService.js";
-import {genres, getGenres} from "../services/fakeGenreService.js";
-import Pagination from "./pagination.jsx";
-import {paginate} from "../utils/pagination.js";
-import ListGroup from "./listGroup.jsx";
+import {getMovies, deleteMovie} from "./services/fakeMovieService.js";
+import {genres, getGenres} from "./services/fakeGenreService.js";
+import Pagination from "./components/pagination.jsx";
+import {paginate} from "./utils/pagination.js";
+import ListGroup from "./components/listGroup.jsx";
+import MoviesTable from "./moviesTable.jsx";
+import _ from 'lodash';
 
 class Movies extends Component{
     state = {
@@ -11,7 +13,8 @@ class Movies extends Component{
         genres : [],
         currentPage : 1,
         pageSize: 4,
-        selectedGenre : ""
+        selectedGenre : "",
+        sortColumn : {column : 'title', order: 'asc'}
     }
 
     componentDidMount() {
@@ -37,6 +40,17 @@ class Movies extends Component{
         this.setState({selectedGenre:filter});
     }
 
+    handleSort = column => {
+        const sortColumn = {...this.state.sortColumn};
+        if (sortColumn.column === column){
+            sortColumn.order = (sortColumn.order === 'asc') ? 'desc' : 'asc';
+        } else {
+            sortColumn.column = column;
+            sortColumn.order = 'asc';
+        }
+        this.setState({sortColumn: sortColumn});
+    }
+
     render (){
         const dbContainsMovies = this.state.movies.length>0;
 
@@ -44,7 +58,9 @@ class Movies extends Component{
 
             const filteredMovies = this.state.selectedGenre ? this.state.movies.filter(m=>m.genre._id === this.state.selectedGenre) : this.state.movies;
 
-            const paginatedMovies = paginate(filteredMovies, this.state.currentPage, this.state.pageSize);
+            const sortedMovies = _.orderBy(filteredMovies, [this.state.sortColumn.column], [this.state.sortColumn.order]);
+
+            const paginatedMovies = paginate(sortedMovies, this.state.currentPage, this.state.pageSize);
 
             return (
                 <div className="row">
@@ -54,34 +70,7 @@ class Movies extends Component{
                     <div className="col">
                         <h1>Showing {filteredMovies.length} movies in the database.</h1>
 
-                        <table className="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Genre</th>
-                                <th scope="col">Stock</th>
-                                <th scope="col">Rate</th>
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {paginatedMovies.map((movie, index) =>
-                                <tr key={index + 1}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>{movie.title}</td>
-                                    <td>{movie.genre.name}</td>
-                                    <td>{movie.numberInStock}</td>
-                                    <td>{movie.dailyRentalRate}</td>
-                                    <td>
-                                        <button onClick={() => this.handleDelete(movie._id)}
-                                                className="btn btn-danger btn-sm">Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            )}
-                            </tbody>
-                        </table>
+                        <MoviesTable paginatedMovies={paginatedMovies} onDelete={this.handleDelete} onSort={this.handleSort} sortColumn={this.state.sortColumn}/>
 
                         <Pagination itemsCount= {filteredMovies.length}
                                     pageSize={this.state.pageSize}

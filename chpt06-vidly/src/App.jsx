@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 
-import Movies from "./components/movies.jsx";
+import Movies from "./movies.jsx";
 
 function App() {
   const [count, setCount] = useState(0)
