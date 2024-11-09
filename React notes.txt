@@ -1,0 +1,69 @@
+1. How to create a new React app?
+    - run "npm create vite" in the React folder
+    - enter the project name, then select React and then TypeScript or Javascript (for tinder app i selected Javascript
+    and for learning app i selected Typescript)
+    - then you should follow the instructions from the terminal...go to the new directory and run "npm install"...this
+    installs all the 3rd party dependencies
+    - then you can run "npm run dev" to run the app
+
+2. How does the project structure look like ?
+    - node_modules contains libraries and other tools that react app needs...you will never touch that folder
+    - public folder contains all sort of public assets like images videos and so on
+    - src will contain our react components
+    - index.html contains  <div id="root"></div> which is a container of all the contents of our app. also
+    "<script type="module" src="/src/main.tsx"></script>" mentions the file main.tsx which is the entry point in our app
+    - package.json contains information about our app and dependencies (pom.xml from maven)
+
+3. The code from components is called JSX, which comes from Javascript XML
+        function Message() {
+            return <h1>Hello dan</h1>;
+        }
+    In jsx code we can only use HTML elements or other React components
+    This code will get translated to javascript. In order to see translated code, go to
+    https://babeljs.io/  and put your JSX code
+    Babel or some similar mechanism is needed because browsers don't know how to interpret JSX code, so the need
+    for a translator mechanism
+
+4. vite monitors our code files, and whenever there are changes to them, it will automatically show changes in the browser
+
+5. How to add other libraries to your project ?
+    npm i bootstrap@5.2.3           // this installs bootstrap which is used for styling..
+
+6. instead of using a  <Fragment>, one can simply use <> and the the closing </>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
