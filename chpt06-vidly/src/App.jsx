@@ -8,6 +8,7 @@ import Customers from "./components/customers.jsx";
 import NavBar from "./components/navBar.jsx";
 import NotFound from "./components/notFound.jsx";
 import MovieForm from "./components/movieForm.jsx";
+import LoginForm from "./components/loginForm.jsx";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,11 +19,12 @@ function App() {
         <main role="main" className="container">
             <h1>Welcome to Vidly app</h1>
             <Routes>
+                <Route path="/login" element={<LoginForm />} />
                 <Route path="/movies/:id" element={<MovieForm />} />
                 <Route path="/movies" element={<Movies />} />
                 <Route path="/rentals" element={<Rentals />} />
                 <Route path="/customers" element={<Customers />} />
-                {/*<Route path="/" element={<Home />} />*/}
+                <Route path="/" element={<Movies />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
             <br />
