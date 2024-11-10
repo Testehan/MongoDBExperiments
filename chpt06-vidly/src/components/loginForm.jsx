@@ -6,13 +6,36 @@ import Input from "./common/input.jsx";
 
 class LoginForm extends Component {
     state = {
-        account: {username: '', password: ''}
+        account: {username: '', password: ''},
+        errors : {}                                     // this object will store the errors concerning the input fields
+    }                                                   // to access an error message we will use something like errors.username
+
+    validate = () =>{
+        const errors = {}
+        const {account} = this.state;
+
+        if (account.username.trim() === ''){
+            errors.username = "username is required ";  // we return an object errors that will contain errors object
+        }
+
+        if (account.password.trim() === ''){
+            errors.password = "password is required ";  // we return an object errors that will contain errors object
+        }
+
+        return Object.keys(errors).length === 0 ? null : errors;
     }
 
     handleSubmit = event => {
         event.preventDefault();
-        // const user = username.current.value;
-        // console.log("Submitted " + user);
+
+        const errors = this.validate();
+        console.log(errors);
+
+        this.setState({errors : errors || {} });    // set the state errors to the validate errors object, and if that one is null, to an empty object
+        if (errors) return;
+
+        // if this line is reached, this is where we will call the server
+        console.log("Submitted");
     }
 
     handleChange = event => {
@@ -34,12 +57,14 @@ class LoginForm extends Component {
                         // from state.account.username
 
                            label="Username"
-                           onChange={this.handleChange}/>
+                           onChange={this.handleChange}
+                           error={this.state.errors.username} />
 
                     <Input name="password"
                            value={this.state.account.password}
                            label="Password"
-                           onChange={this.handleChange}/>
+                           onChange={this.handleChange}
+                           error={this.state.errors.password} />
 
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
