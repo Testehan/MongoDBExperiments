@@ -1,4 +1,7 @@
 import React, {Component} from "react";
+import Movies from "./movies.jsx";
+import {Route} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class MoviesTable extends Component{
 
@@ -28,7 +31,7 @@ class MoviesTable extends Component{
                 {this.props.paginatedMovies.map((movie, index) =>
                     <tr key={index + 1}>
                         <th scope="row">{index + 1}</th>
-                        <td>{movie.title}</td>
+                        <td><Link to={`/movies/${movie._id}`}>{movie.title}</Link> </td>
                         <td>{movie.genre.name}</td>
                         <td>{movie.numberInStock}</td>
                         <td>{movie.dailyRentalRate}</td>
