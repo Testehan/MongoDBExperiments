@@ -13,20 +13,32 @@ class App extends Component {
         console.log(promise)
         const response = await promise;
         this.setState({posts:response.data});
-
-
     }
 
-    handleAdd = () => {
+    handleAdd = async () => {
         console.log("Add");
+        const obj= {title : 'a', body:'b'}
+        const promise = await axios.post("https://jsonplaceholder.typicode.com/posts" , obj);
+        console.log(promise.data);
+        this.setState({posts: [promise.data, ...this.state.posts]});
     };
 
-    handleUpdate = post => {
+    handleUpdate = async (post) => {
         console.log("Update", post);
+        post.title= "UPDATED";
+        const promise = await axios.put("https://jsonplaceholder.typicode.com/posts/" + post.id , post);
+        console.log(promise.data);
+        const posts= [...this.state.posts];
+        const index = posts.indexOf(post);
+        posts[index] = {...post}
+        this.setState({posts : posts});
     };
 
-    handleDelete = post => {
+    handleDelete = async (post) => {
         console.log("Delete", post);
+        const promise = await axios.delete("https://jsonplaceholder.typicode.com/posts/" + post.id);
+        const posts= this.state.posts.filter(p => p.id !== post.id);
+        this.setState({posts : posts});
     };
 
     render() {
