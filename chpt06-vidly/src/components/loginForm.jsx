@@ -1,7 +1,5 @@
-import React, { Component } from "react";
+import React  from "react";
 import Joi from 'joi-browser';
-
-import Input from "./common/input.jsx";
 import Form from "./common/form.jsx";
 
 

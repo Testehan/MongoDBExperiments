@@ -6,6 +6,7 @@ import {paginate} from "./utils/pagination.js";
 import ListGroup from "./components/listGroup.jsx";
 import MoviesTable from "./moviesTable.jsx";
 import _ from 'lodash';
+import {Link} from "react-router-dom";
 
 class Movies extends Component{
     state = {
@@ -68,6 +69,12 @@ class Movies extends Component{
                         <ListGroup items={this.state.genres} selectedItem={this.state.selectedGenre} onFilterChange={this.handleFilterChange}/>
                     </div>
                     <div className="col">
+                        <Link
+                            to="/movies/new"
+                            className="btn btn-primary"
+                            style={{ marginBottom: 20 }}>
+                            New Movie
+                        </Link>
                         <h1>Showing {filteredMovies.length} movies in the database.</h1>
 
                         <MoviesTable paginatedMovies={paginatedMovies} onDelete={this.handleDelete} onSort={this.handleSort} sortColumn={this.state.sortColumn}/>
