@@ -7,6 +7,7 @@ import ListGroup from "./components/listGroup.jsx";
 import MoviesTable from "./moviesTable.jsx";
 import _ from 'lodash';
 import {Link} from "react-router-dom";
+import SearchBox from "./components/searchBox.jsx";
 
 class Movies extends Component{
     state = {
@@ -14,6 +15,7 @@ class Movies extends Component{
         genres : [],
         currentPage : 1,
         pageSize: 4,
+        searchQuery: "",
         selectedGenre : "",
         sortColumn : {column : 'title', order: 'asc'}
     }
@@ -38,7 +40,7 @@ class Movies extends Component{
 
     handleFilterChange = filter =>{
         console.log(filter);
-        this.setState({selectedGenre:filter});
+        this.setState({selectedGenre:filter, searchQuery:""});
     }
 
     handleSort = column => {
@@ -52,12 +54,22 @@ class Movies extends Component{
         this.setState({sortColumn: sortColumn});
     }
 
+    handleSearch = query => {
+        this.setState({ searchQuery: query, selectedGenre: null, currentPage: 1 });
+    };
+
     render (){
         const dbContainsMovies = this.state.movies.length>0;
 
         if (dbContainsMovies) {
 
-            const filteredMovies = this.state.selectedGenre ? this.state.movies.filter(m=>m.genre._id === this.state.selectedGenre) : this.state.movies;
+            var filteredMovies = this.state.movies
+            if (this.state.searchQuery) {
+                filteredMovies = this.state.movies.filter(m =>
+                    m.title.toLowerCase().startsWith(this.state.searchQuery.toLowerCase()));
+            } else if (this.state.selectedGenre) {
+                filteredMovies = this.state.movies.filter(m => m.genre._id === this.state.selectedGenre);
+            }
 
             const sortedMovies = _.orderBy(filteredMovies, [this.state.sortColumn.column], [this.state.sortColumn.order]);
 
@@ -76,7 +88,7 @@ class Movies extends Component{
                             New Movie
                         </Link>
                         <h1>Showing {filteredMovies.length} movies in the database.</h1>
-
+                        <SearchBox value={this.state.searchQuery} onChange={this.handleSearch}/>
                         <MoviesTable paginatedMovies={paginatedMovies} onDelete={this.handleDelete} onSort={this.handleSort} sortColumn={this.state.sortColumn}/>
 
                         <Pagination itemsCount= {filteredMovies.length}
