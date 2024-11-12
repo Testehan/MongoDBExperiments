@@ -1,6 +1,6 @@
 import axios from "axios";
-// import logger from "./logService";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
+import logger from './logService.js'
 
 
 // this is some generic interceptor that works on the entire app and is responsible for informing the user about some errors
@@ -12,7 +12,8 @@ axios.interceptors.response.use(null, error => {
 
     if (!expectedError) {
         console.log(error);
-        // toast.error("An unexpected error occurrred.");
+        logger.log(error);
+        toast.error("An unexpected error occurrred.");
     }
 
     return Promise.reject(error);
