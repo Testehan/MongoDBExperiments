@@ -36,9 +36,20 @@ class App extends Component {
 
     handleDelete = async (post) => {
         console.log("Delete", post);
-        const promise = await axios.delete("https://jsonplaceholder.typicode.com/posts/" + post.id);
+
+        const originalPosts = this.state.posts;
+        // update the UI with the removed post
         const posts= this.state.posts.filter(p => p.id !== post.id);
         this.setState({posts : posts});
+
+        // send the delete request, and if that fails, simply restore the UI to the previous state
+        try {
+            const promise = await axios.delete("https://jsonplaceholder.typicode.com/posts/" + post.id);
+        } catch (exception ){
+            alert('Error occured when deleting the post');
+            this.setState({posts : originalPosts});
+        }
+
     };
 
     render() {
