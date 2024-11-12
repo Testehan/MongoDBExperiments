@@ -1,8 +1,9 @@
 import * as Sentry from "@sentry/react";
+import apiKeys from "../userConfig/apiKeys.json"
 
 function init() {
   Sentry.init({
-    dsn: "https://305ea4c31991c281aea492fc92f9f360@o4508279654055936.ingest.de.sentry.io/4508279658184784",
+    dsn: apiKeys.sentryUrl,
     integrations: [
       Sentry.browserTracingIntegration(),
       Sentry.replayIntegration(),

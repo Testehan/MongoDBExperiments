@@ -39,6 +39,9 @@ class App extends Component {
     };
 
     handleDelete = async (post) => {
+
+        throw new Error("This is your first error!");
+
         console.log("Delete", post);
 
         const originalPosts = this.state.posts;
