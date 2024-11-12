@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import './App.css'
-import axios from "axios";
+import http from "./services/httpService";
+import config from "./userConfig/config.json"
+
 
 class App extends Component {
     state = {
@@ -9,7 +11,7 @@ class App extends Component {
 
     async componentDidMount() {
         // a promise is in pending state followed by success or rejected
-        const promise = axios.get("https://jsonplaceholder.typicode.com/posts");
+        const promise = http.get(config.apiEndpoint);
         console.log(promise)
         const response = await promise;
         this.setState({posts:response.data});
@@ -18,7 +20,7 @@ class App extends Component {
     handleAdd = async () => {
         console.log("Add");
         const obj= {title : 'a', body:'b'}
-        const promise = await axios.post("https://jsonplaceholder.typicode.com/posts" , obj);
+        const promise = await http.post(config.apiEndpoint , obj);
         console.log(promise.data);
         this.setState({posts: [promise.data, ...this.state.posts]});
     };
@@ -26,7 +28,7 @@ class App extends Component {
     handleUpdate = async (post) => {
         console.log("Update", post);
         post.title= "UPDATED";
-        const promise = await axios.put("https://jsonplaceholder.typicode.com/posts/" + post.id , post);
+        const promise = await http.put(config.apiEndpoint + post.id , post);
         console.log(promise.data);
         const posts= [...this.state.posts];
         const index = posts.indexOf(post);
@@ -44,9 +46,13 @@ class App extends Component {
 
         // send the delete request, and if that fails, simply restore the UI to the previous state
         try {
-            const promise = await axios.delete("https://jsonplaceholder.typicode.com/posts/" + post.id);
+            const promise = await http.delete(config.apiEndpoint + post.id);
         } catch (exception ){
-            alert('Error occured when deleting the post');
+            if (exception.response && exception.response.status === 404){
+                alert("This post was deleted");
+            } else {
+                alert('Error occured when deleting the post');
+            }
             this.setState({posts : originalPosts});
         }
 
