@@ -19,6 +19,7 @@ class RegisterForm extends Form {
 
     doSubmit = () => {
         // if this line is reached, this is where we will call the server
+        // for calling the server use userService.js
         console.log("Submitted");
     }
 

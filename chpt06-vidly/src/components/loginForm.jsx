@@ -37,6 +37,7 @@ class LoginForm extends Form {
 
     doSubmit = () => {
         // if this line is reached, this is where we will call the server
+        // for this you will use authService.js server will reply with a JWT if username and pass are valid
         console.log("Submitted");
     }
 

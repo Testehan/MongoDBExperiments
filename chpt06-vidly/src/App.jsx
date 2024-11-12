@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css'
 
 import Movies from "./movies.jsx";
 import {Route, Routes} from "react-router-dom";
+import {ToastContainer} from "react-toastify";
 import Rentals from "./components/rentals.jsx";
 import Customers from "./components/customers.jsx";
 import NavBar from "./components/navBar.jsx";
@@ -16,6 +18,7 @@ function App() {
 
   return (
     <>
+        <ToastContainer/>
         <NavBar></NavBar>
         <main role="main" className="container">
             <h1>Welcome to Vidly app</h1>
