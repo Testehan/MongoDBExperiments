@@ -1,3 +1,4 @@
+import {ToastContainer} from "react-toastify";
 
 import Header from './components/header';
 import About from './components/about';
@@ -8,12 +9,14 @@ import Contact from './components/contact';
 import Footer from './components/footer';
 
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
 
 
   return (
     <>
+      <ToastContainer/>
       <div className="font-sans text-gray-900">
         <Header />
         <main>
